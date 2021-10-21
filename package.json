@@ -1,0 +1,33 @@
+{
+  "name": "plain-j",
+  "version": "1.0.0",
+  "description": "Simple and proof of concept crud web app with mongoDB",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Kebron S. Zerie",
+  "license": "MIT",
+  "dependencies": {
+    "body-parser": "^1.18.3",
+    "ejs": "^2.6.1",
+    "express": "^4.16.3",
+    "lodash": "^4.17.21",
+    "mongoose": "^6.0.11",
+    "nodemon": "^2.0.14"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/1KEBRON/Plain-J.git"
+  },
+  "keywords": [
+    "Mongoose",
+    "Crud",
+    "ejs",
+    "template"
+  ],
+  "bugs": {
+    "url": "https://github.com/1KEBRON/Plain-J/issues"
+  },
+  "homepage": "https://github.com/1KEBRON/Plain-J#readme"
+}

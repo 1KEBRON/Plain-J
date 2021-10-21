@@ -1,0 +1,11 @@
+<%- include('partials/header') %> 
+<h1>Home</h1>
+<%for (let i = 0; i < contents.length; i++) { %>
+   <h2><%=  headerTitles[i].title %> </h2>
+<p><%= contents[i].content.slice(0, 125).concat('...') %> 
+   <a href="/posts/<%= headerTitles[i].title %>  ">Read More</a>
+ </p>
+
+
+<% } %> 
+<%- include('partials/footer') %> 
