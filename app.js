@@ -3,7 +3,7 @@ const express = require("express");
 const mongoose = require("mongoose")
 const ejs = require("ejs");
 const _ = require('lodash');
-const { each } = require("lodash");
+const { each, find } = require("lodash");
 const { query } = require("express");
 
 const homeStartingContent = "Lacus vel facilisis volutpat est velit egestas dui id ornare. Semper auctor neque vitae tempus quam. Sit amet cursus sit amet dictum sit amet justo. Viverra tellus in hac habitasse. Imperdiet proin fermentum leo vel orci porta. Donec ultrices tincidunt arcu non sodales neque sodales ut. Mattis molestie a iaculis at erat pellentesque adipiscing. Magnis dis parturient montes nascetur ridiculus mus mauris vitae ultricies. Adipiscing elit ut aliquam purus sit amet luctus venenatis lectus. Ultrices vitae auctor eu augue ut lectus arcu bibendum at. Odio euismod lacinia at quis risus sed vulputate odio ut. Cursus mattis molestie a iaculis at erat pellentesque adipiscing.";
@@ -21,16 +21,16 @@ app.use(express.static("public"));
 // TO SAVE with MONGODB
 // 2. make a scema composing post
 const contentSubmitionSchema = {
-  tittle : String,
+  title : String,
   content: String
 }
-const feedPostSchema = {
+const postFeedSchema = {
   name:String,
   posts:[contentSubmitionSchema]
 }
 // 3. Make a db model from the scema 
 const Content = mongoose.model("Content",contentSubmitionSchema);
-
+const PostFeed  = mongoose.model("PostFeed",postFeedSchema)
 // 5. Save it
 
 
@@ -47,13 +47,17 @@ app.get('/',(req,res)=>{
 })
 app.get('/posts/:title',(req,res)=>{
   let requestedTitle = req.params.title
-  for(let i = 0; i < composePosts.length; i++){
-    if(_.lowerCase(requestedTitle)  ==_.lowerCase(composePosts[i].title)){
-      res.render('post',{postTitle:composePosts[i].title, postContent:composePosts[i].content})
-  }
-  }
+
+  Content.findOne({name:requestedTitle},(err,dataFound)=>{
+    if(!err){
+       res.render('post',{postTitle:dataFound.title, postContent:dataFound.content})
+
+    }    
+
+
+  })
   
-})
+  })
 
 app.get('/about',(req,res)=>{
   res.render("about",{headerTitle:'About',content:aboutContent})
