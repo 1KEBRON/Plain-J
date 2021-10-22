@@ -1,4 +1,4 @@
-//jshint esversion:6
+const mogoose = require('mongoose')
 
 const express = require("express");
 const bodyParser = require("body-parser");
