@@ -1,5 +1,4 @@
-const mogoose = require('mongoose')
-
+const mongoose = require('mongoose')
 const express = require("express");
 const bodyParser = require("body-parser");
 const ejs = require("ejs");
@@ -12,17 +11,28 @@ const contactContent = "Scelerisque eleifend donec pretium vulputate sapien. Rho
 const app = express();
 
 app.set('view engine', 'ejs');
+mongoose.connect('mongodb://localhost:27017/PlainJournalDB',{useNewUrlParser:true,useUnifiedTopology:true});
 
-app.use(bodyParser.urlencoded({extended: true}));
+app.use(express.urlencoded({extended: true}));
 app.use(express.static("public"));
 
-let posts = [];
+const postSchema = {
+  title:String,
+  content:String,
+}
+
+const PostCont = new mongoose.model('Postcont',postSchema);
 
 app.get("/", function(req, res){
-  res.render("home", {
-    startingContent: homeStartingContent,
-    posts: posts
-    });
+  PostCont.find({},(err,dataFound)=>{
+    if(!err){
+      res.render("home", {
+        postTitles: dataFound,
+        posts: dataFound
+      });
+    }
+  })
+  
 });
 
 app.get("/about", function(req, res){
@@ -38,13 +48,12 @@ app.get("/compose", function(req, res){
 });
 
 app.post("/compose", function(req, res){
-  const post = {
+  const newPost = new PostCont({
     title: req.body.postTitle,
     content: req.body.postBody
-  };
+  });
 
-  posts.push(post);
-
+  newPost.save()
   res.redirect("/");
 
 });
@@ -52,7 +61,7 @@ app.post("/compose", function(req, res){
 app.get("/posts/:postName", function(req, res){
   const requestedTitle = _.lowerCase(req.params.postName);
 
-  posts.forEach(function(post){
+  PostCont.forEach(function(post){
     const storedTitle = _.lowerCase(post.title);
 
     if (storedTitle === requestedTitle) {
@@ -65,6 +74,6 @@ app.get("/posts/:postName", function(req, res){
 
 });
 
-app.listen(3000, function() {
-  console.log("Server started on port 3000");
+app.listen(2000, function() {
+  console.log("Server started on port 2000");
 });
