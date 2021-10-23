@@ -26,10 +26,7 @@ const PostCont = new mongoose.model('Postcont',postSchema);
 app.get("/", function(req, res){
   PostCont.find({},(err,dataFound)=>{
     if(!err){
-      res.render("home", {
-        postTitles: dataFound,
-        posts: dataFound
-      });
+      res.render("home", {postTitles: dataFound,posts: dataFound});
     }
   })
   
