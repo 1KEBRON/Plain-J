@@ -59,20 +59,26 @@ app.post("/compose", function(req, res){
 });
 
 app.get("/posts/:postId", function(req, res){
-  const requestedTitle = req.params.postId
-  PostCont.findOne({_id:requestedTitle},(err,dataFound)=>{
+  const requestedPostId = req.params.postId
+  PostCont.findOne({_id:requestedPostId},(err,dataFound)=>{
     if(!err){
           res.render("post", {
             title: dataFound.title,
-            content: dataFound.content
+            content: dataFound.content,
+            postId: dataFound._id
           });
         }
       })
-  
-  
-
-
 });
+app.get("/delete-post/:id",(req,res)=>{
+  const postId = req.params.id
+  PostCont.deleteOne({_id:postId},(err)=>{
+    if(!err){
+      console.log('successfully deleted one');
+      res.redirect('/')
+    }
+  })
+})
 
 app.listen(2000, function() {
   console.log("Server started on port 2000");
