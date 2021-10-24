@@ -52,17 +52,15 @@ app.post("/compose", function(req, res){
 
   newPost.save((err)=>{
     if(err){
-      console.log(err)
-    }else{
        res.redirect("/");
     }
   })
 
 });
 
-app.get("/posts/:postName", function(req, res){
-  const requestedTitle = _.lowerCase(req.params.postName);
-  PostCont.findOne({name:requestedTitle},(err,dataFound)=>{
+app.get("/posts/:postId", function(req, res){
+  const requestedTitle = req.params.postId
+  PostCont.findOne({_id:requestedTitle},(err,dataFound)=>{
     if(!err){
           res.render("post", {
             title: dataFound.title,
