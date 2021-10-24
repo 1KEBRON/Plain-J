@@ -50,24 +50,29 @@ app.post("/compose", function(req, res){
     content: req.body.postBody
   });
 
-  newPost.save()
-  res.redirect("/");
+  newPost.save((err)=>{
+    if(err){
+      console.log(err)
+    }else{
+       res.redirect("/");
+    }
+  })
 
 });
 
 app.get("/posts/:postName", function(req, res){
   const requestedTitle = _.lowerCase(req.params.postName);
+  PostCont.findOne({name:requestedTitle},(err,dataFound)=>{
+    if(!err){
+          res.render("post", {
+            title: dataFound.title,
+            content: dataFound.content
+          });
+        }
+      })
+  
+  
 
-  PostCont.forEach(function(post){
-    const storedTitle = _.lowerCase(post.title);
-
-    if (storedTitle === requestedTitle) {
-      res.render("post", {
-        title: post.title,
-        content: post.content
-      });
-    }
-  });
 
 });
 
